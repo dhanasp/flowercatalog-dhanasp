@@ -1,4 +1,3 @@
-
 const querystring = require('querystring');
 const url = require('url');
 const toKeyValue = kv=>{
@@ -15,12 +14,17 @@ const parseBody = function(text){
  return querystring.parse(text);
 }
 
-
 let redirect = function(path){
  this.statusCode = 302;
  this.setHeader('location',path);
  this.end();
 };
+
+let handleInvalidUrl=function(msg){
+  this.statusCode=404;
+  this.write(msg);
+  this.end();
+}
 
 const parseCookies = text=> {
  try {
@@ -41,7 +45,7 @@ let invoke = function(req,res){
 const initialize = function(){
  this._handlers = {GET:{},POST:{}};
  this._preprocess = [];
- this._postProcesses = [];
+ this._postprocesses = [];
 };
 
 const get = function(url,handler){
@@ -56,16 +60,16 @@ const use = function(handler){
  this._preprocess.push(handler);
 };
 
-const usePostProcess = function(postProcess) {
- this._postProcesses.push(postProcess);
+const usePostprocess = function(handler) {
+ this._postprocesses.push(handler);
 }
 
 let urlIsOneOf = function(urls){
  return urls.includes(this.url);
 }
 
-const runPostProcessors = function(postProcessors,req,res) {
- postProcessors.forEach(function(process){
+const runPostprocessors = function(req,res) {
+  this._postprocesses.forEach(function(process){
    if(res.finished) return;
    process(req,res);
  })
@@ -76,11 +80,12 @@ const main = function(req,res){
  req.url = parsedUrl.pathname;
  req.queryParams = parsedUrl.query;
  res.redirect = redirect.bind(res);
+ res.handleInvalidUrl = handleInvalidUrl.bind(res);
  req.urlIsOneOf = urlIsOneOf.bind(req);
  req.cookies = parseCookies(req.headers.cookie||'');
  let content="";
- console.log(req.url);
- console.log(req.method)
+ // console.log(req.url);
+ // console.log(req.method)
  req.on('data',data=>content+=data.toString())
  req.on('end',()=>{
    req.body = parseBody(content);
@@ -92,7 +97,7 @@ const main = function(req,res){
    if(res.finished) return;
    invoke.call(this,req,res);
    if(res.finished) return;
-   runPostProcessors(this._postProcesses,req,res);
+   runPostprocessors.call(this,req,res);
  });
 };
 
@@ -104,7 +109,7 @@ let create = ()=>{
  rh.get = get;
  rh.post = post;
  rh.use = use;
- rh.usePostProcess=usePostProcess;
+ rh.usePostprocess=usePostprocess;
  return rh;
 }
 exports.create = create;

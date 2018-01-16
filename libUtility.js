@@ -13,4 +13,8 @@ const getContentType = function(file) {
   return allExtensionsWithContentType[fileExtension];
 }
 
+const isFile=function(fs,file){
+  return fs.existsSync(file);
+}
+exports.isFile=isFile;
 exports.getContentType=getContentType;

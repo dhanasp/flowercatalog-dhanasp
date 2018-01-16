@@ -1,6 +1,7 @@
 const fs = require('fs');
-
-const logger = function(fs,req,res) {
+const timeStamp = require('./serverUtility/time.js').timeStamp;
+const lib=require('./libUtility.js');
+const logger = function(req,res) {
   let logs = ['--------------------------------------------------------------',
     `${timeStamp()}`,
     `${req.method}`,
@@ -12,6 +13,20 @@ const logger = function(fs,req,res) {
   fs.appendFile('./request.log',logs,()=>{});
 }
 
-const getLoginPage=function(req,res){
-  fs.readFileSync('./')
+const serveStaticPages=function(req,res){
+  let file='./public'+req.url;
+  let fileExtension=lib.getContentType(file);
+  if(!lib.isFile(fs,file)){
+    res.handleInvalidUrl('page not found');
+    return;
+  }
+  res.setHeader('Content-Type',fileExtension);
+  content=fs.readFileSync(file);
+  res.write(content);
+  res.end();
+}
+
+module.exports={
+  logger:logger,
+  serveStaticPages:serveStaticPages
 }

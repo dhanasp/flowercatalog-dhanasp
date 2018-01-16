@@ -1,10 +1,13 @@
-const timeStamp = require('./serverUtility/time.js').timeStamp;
-const handler=require('./handler.js');
+const lib=require('./libUtility.js');
+const handler=require('./handlers.js');
 const logger=handler.logger;
-const getLoginPage=handler.getLoginPage;
-const app=require('./app.js');
+const serveStaticPages=handler.serveStaticPages;
+const webApp = require('./webapp.js');
 
-app.use(logger(req,res));
-app.get('/',()=>req.url='/login');
-app.post('/login',getLoginPage(req,res));
-// app.get('')
+
+const app=webApp.create();
+app.use(logger);
+app.get('/',(req,res)=>req.url='/index.html');
+app.post('/login',);
+app.usePostprocess(serveStaticPages);
+exports.app=app;
