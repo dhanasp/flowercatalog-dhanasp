@@ -1,0 +1,32 @@
+h1{
+  color:Orange;
+  text-align:right;
+}
+hr{
+  color:gray;
+  border-width: 3px;
+
+}
+#abeli{
+  position: absolute;
+  top:200px;
+  left:1100px;
+}
+
+#ageratum{
+  position: absolute;
+  top:225px;
+  left:1100px;
+}
+
+#AnimatedFlower{
+  position: absolute;
+  top:270px;
+  left:1170px;
+}
+
+#guestBook{
+  position: absolute;
+  top: 400px;
+  left:1040px;
+}

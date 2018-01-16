@@ -1,0 +1,43 @@
+What files can exist in the website?
+How will an admin start the website?
+ server.js
+How will someone access your website?
+ log port number
+ log request details {url}
+ people generally access website, they dont know your page names or inner urls/paths
+How to handle a visit to your website on supported/unsupported urls?
+ on / render homepage
+ on unhandled urls
+   please dont crash the webserver
+What are some good conventions for website resources?
+ index.html for landing page
+ keep names same for related resources: flowerHome.html, flowerHome.css, flowerHome.js
+What is a good convention for folder & resources structure in a website?
+ keep the static files to be served in public folder
+   webapp
+     data
+       comments.json
+     templates
+       guestbook.html.template
+     public
+       js
+         index.js
+       css
+         styles.css
+       img
+         a.jpg
+         b.gif
+       docs
+       index.html
+       flowerA.html
+     lib
+       catalog.js
+       handlers.js
+     test
+       catalogTest.js
+       handlersTest.js
+     server.js
+     runAllTests.sh
+     start.sh
+
+curl "http://localhost:8800/comment" -H "Content-Type: application/x-www-form-urlencoded" --data "Name=Debu&Comment=Kaam+Karo"s

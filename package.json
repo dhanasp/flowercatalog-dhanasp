@@ -1,0 +1,25 @@
+{
+  "name": "flowercatalogwebsite",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {},
+  "devDependencies": {"chai": "^4.1.2"},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/STEP-tw/flowercatalog-dhanasp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/STEP-tw/flowercatalog-dhanasp/issues"
+  },
+  "homepage": "https://github.com/STEP-tw/flowercatalog-dhanasp#readme"
+}

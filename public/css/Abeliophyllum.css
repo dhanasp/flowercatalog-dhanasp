@@ -1,0 +1,23 @@
+h1{
+  color:orange;
+  padding:20px;
+  text-align:center;
+  /*border: 2px solid gray;*/
+}
+hr{
+  color:gray;
+  border-width: 3px;
+
+}
+#img{
+  position:absolute ;
+  top:140px;
+  left:0px;
+}
+#content{
+  width:800px;
+  height: 300px;
+  position: relative;
+  top:400px;
+  left:600px;
+}
