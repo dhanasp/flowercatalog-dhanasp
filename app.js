@@ -23,7 +23,7 @@ app.get('/', (req, res) => req.url = '/index.html');
 app.get('/guestBook.html',loadComments);
 app.get('/login.html',getLogInPage);
 app.post('/login',processLogIn);
-app.post('/logout',processLogOut);
+app.get('/logout',processLogOut);
 app.get('/guestBook',getCommentBox);
 app.post('/addComments',serveGuestBook)
 app.usePostprocess(serveStaticPages);

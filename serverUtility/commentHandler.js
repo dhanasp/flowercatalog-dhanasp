@@ -45,7 +45,7 @@ CommentHandler.prototype.storeComment= function (comment) {
   comment.DateAndTime=this.getTimeAndDate();
   let comments = fs.readFileSync(this.path,'utf8');
   let allGuestData = JSON.parse(comments);
-  allGuestData.push(comment);
+  allGuestData.unshift(comment);
   allComments=JSON.stringify(allGuestData);
   fs.writeFileSync(this.path,allComments);
 };
