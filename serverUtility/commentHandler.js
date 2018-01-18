@@ -1,17 +1,17 @@
-
-const getFullGuestDataAndStore = function(url) {
-  let GuestData = qs.parse(url);
-  GuestData.DateAndTime = getTimeAndDate();
-  collectionOfData.unshift(GuestData);
-  let data = JSON.stringify(collectionOfData);
-  fs.writeFileSync('./data/comments.json', data);
-  return;
+const fs = require('fs');
+const CommentHandler=function(path){
+  this.path=path;
 }
 
-const getHtmlFormOfContent = function(GuestData) {
+CommentHandler.prototype.getTimeAndDate = function () {
+  let time=new Date();
+  return time.toLocaleString();
+};
+
+CommentHandler.prototype.getHtmlFormOfContent = function(allGuestData) {
   let startingContent = '<div><br>';
   let endingContent = '</div></br>';
-  collectionOfDataWithHtml = collectionOfData.map(function(GuestData) {
+  collectionOfDataWithHtml =allGuestData.map(function(GuestData) {
     let nameInHtml = 'Name: ' + GuestData.name + '<br>';
     let commentInHtml = 'Comment: ' + GuestData.comment + '<br>';
     let DateAndTime = 'DateAndTime:' + GuestData.DateAndTime + '<br>';
@@ -20,12 +20,34 @@ const getHtmlFormOfContent = function(GuestData) {
   return collectionOfDataWithHtml;
 }
 
-const displayAllGuestsInfo = function(req, res) {
-  let comments = fs.readFileSync('./data/comments.JSON', 'utf8');
-  let guestBookContents = fs.readFileSync('./public/guestBook.html', 'utf8');
-  let fileContents = guestBookContents.split('</body>');
-  let GuestData = JSON.parse(comments);
-  let allComments = getHtmlFormOfContent(GuestData);
-  res.write(fileContents[0] + allComments.join('') + '</body></html>');
-  res.end();
+CommentHandler.prototype.loadComments = function() {
+  let guestBookContents = fs.readFileSync('./templates/guestLogin.html','utf8');
+  let comments = fs.readFileSync(this.path,'utf8');
+  let allGuestData = JSON.parse(comments);
+  let allCommentsInHtml = this.getHtmlFormOfContent(allGuestData);
+  guestBookContents=guestBookContents.replace('comments',allCommentsInHtml);
+  return guestBookContents;
 }
+
+
+CommentHandler.prototype.postGuestBook = function (name) {
+  GuestbookWithCommentBox=fs.readFileSync('./templates/guestBook.html','utf8');
+  GuestbookWithCommentBox=GuestbookWithCommentBox.replace('${name}',name);
+  let comments = fs.readFileSync(this.path,'utf8');
+  let allGuestData = JSON.parse(comments);
+  let allCommentsInHtml = this.getHtmlFormOfContent(allGuestData);
+  GuestbookWithCommentBox=GuestbookWithCommentBox.replace('allComments',allCommentsInHtml);
+  return GuestbookWithCommentBox;
+
+};
+
+CommentHandler.prototype.storeComment= function (comment) {
+  comment.DateAndTime=this.getTimeAndDate();
+  let comments = fs.readFileSync(this.path,'utf8');
+  let allGuestData = JSON.parse(comments);
+  allGuestData.push(comment);
+  allComments=JSON.stringify(allGuestData);
+  fs.writeFileSync(this.path,allComments);
+};
+
+module.exports=CommentHandler;

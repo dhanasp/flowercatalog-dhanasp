@@ -68,6 +68,13 @@ let urlIsOneOf = function(urls){
  return urls.includes(this.url);
 }
 
+const runPreprocessors=function(req,res){
+  this._preprocess.forEach(middleware=>{
+    if(res.finished) return;
+    middleware(req,res);
+  });
+}
+
 const runPostprocessors = function(req,res) {
   this._postprocesses.forEach(function(process){
    if(res.finished) return;
@@ -85,15 +92,11 @@ const main = function(req,res){
  req.cookies = parseCookies(req.headers.cookie||'');
  let content="";
  // console.log(req.url);
- // console.log(req.method)
+ // console.log(req.methodx)
  req.on('data',data=>content+=data.toString())
  req.on('end',()=>{
    req.body = parseBody(content);
-   content="";
-   this._preprocess.forEach(middleware=>{
-     if(res.finished) return;
-     middleware(req,res);
-   });
+   runPreprocessors.call(this,req,res);
    if(res.finished) return;
    invoke.call(this,req,res);
    if(res.finished) return;

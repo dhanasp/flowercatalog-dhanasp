@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <script src="data.js" charset="utf-8"></script>
+    <script src="getData.js" charset="utf-8"></script>
+    </script>
+    <link rel="stylesheet" href="css/guestBook.css">
+    <h1>
+      <a href="index.html"><<</a>Guest Book
+    </h1>
+    <h2>
+      Leave a Comment
+    </h2>
+  </head>
+  <body>
+      <form id="form" action="addComments" method="post" onsubmit="encodeData()">
+        Name:<input id="name" type="text" name="name" value="" required><br>
+        Comment: <textarea id="comment" name="comment"rows="8"cols="80" required></textarea><br>
+        <button type="submit" >Submit</button>
+      </form> <br>
+    <hr>
+    <h3>Name_Comment_DateAndTime</h3>
+    <hr>
+  </body>
+</html>
